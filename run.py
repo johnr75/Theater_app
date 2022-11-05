@@ -1,4 +1,4 @@
-from application.__int__ import app
+from Theater_app import app
 if __name__ =='__main__':
     app.run(debug=True)
 

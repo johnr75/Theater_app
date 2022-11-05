@@ -2,9 +2,8 @@ from flask import Flask
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, IntegerField, DateField, RadioField, \
     BooleanField
-from application.__int__ import mongo
 from wtforms.validators import InputRequired
-from .__int__ import mongo
+from Theater_app import mongo
 
 states = [
     ('AL', 'Alabama'),

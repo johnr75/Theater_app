@@ -1,7 +1,7 @@
 
 from flask import render_template, request, redirect, url_for, flash, session
 from .model import *
-from application.__int__ import mongo, app
+from Theater_app import mongo, app
 from .forms import ProductionForm, CastCrew, person, show_type, company, com_type, SearchForm, UtilityForm, CompanyForm
 from .search import db_find_results
 

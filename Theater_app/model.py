@@ -1,6 +1,6 @@
 from bson import ObjectId
 from datetime import datetime, time
-from application.__int__ import mongo
+from Theater_app import mongo
 
 
 def db_open_record(db, pid):
