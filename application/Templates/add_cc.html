@@ -1,0 +1,15 @@
+{% extends "/base.html" %}
+
+
+{%block title %} Add Cast & Crew {% endblock %}
+{% block content %}
+    <h2> Input the person you want to add</h2>
+     <form method="Post">
+        {{ form.person.label}}   {{ form.person }}
+        {{ form.type.label}}   {{ form.type}}
+         {{ form.role.label}}   {{ form.role }}
+        {{ form.submit }}
+    </form>
+<br>
+<a class="btn btn-primary" href="{{ url_for('production_detail',pid=pid )}}">Return to Details</a>
+{% endblock %}

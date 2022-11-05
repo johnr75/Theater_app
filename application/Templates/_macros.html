@@ -1,0 +1,20 @@
+{% macro render_radio(field) %}
+<div class="form-check form-check-inline">
+    <label class="form-check-label"><b>{{field.label.text}}</b></label><br>
+    {% for subfield in field %}
+        <label class="radio-inline">
+           {{subfield}}
+            {{subfield.label.text}}
+        </label>
+    {% endfor %}
+
+</div>
+{%endmacro%}
+
+
+{% macro render_date(field) %}
+<div class="'form-group">
+    <label for="{{field.name}}" class="col-lg-2 control-label">{{field.label.text}}</label>
+    {{field(class='form-control', **kwargs)|safe}}
+</div>
+{%endmacro%}

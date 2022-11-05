@@ -1,0 +1,36 @@
+{% extends "/base.html" %}
+
+
+{%block title %} Search Results {% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+     <div class="col-2"></div>
+        <div class="col">
+              <H2 align="center"> {{lname}} </H2>
+        </div>
+    <div class="col-1"></div>
+</div>
+        <div class="row">
+
+            <div class="col"></div>
+            <div class="col pb-2 border"> <b>Name</b></div>
+              <div class="col border"><b>Active</b></div>
+
+        </div>
+        {% for result in results %}
+            <div class="row">
+                 <div class="col"></div>
+                 <div class="col pb-2 pt-2 border">
+                     <a href="{{ url_for('utility_update', pid=result['_id'], lname=lname, type='edit')}}">  {{ result.Name }} </a>
+                 </div>
+                <div class="col pb-2 pt-2 border">{{result.Active}}</div>
+                </div>
+
+{% endfor %}
+<br>
+<center>
+<a class="btn btn-primary" href="{{ url_for('utility_update',lname=lname, type='add', pid=0 )}}">Add {{lname}}</a>
+</center>
+
+{% endblock %}

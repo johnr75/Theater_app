@@ -1,0 +1,40 @@
+{% extends "/base.html" %}
+
+
+
+{%block title %} Details {% endblock %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible" role="alert">
+  {{message}}
+</div>
+
+
+{% endfor %}
+
+    <h2>Details for {{output.Production}} </h2>
+    <p></p>
+    <b>Company Name:</b> {{output.Company.Name}} <br>
+    <b>City, State:</b>  {{output.Company.City}}, {{output.Company.State}}<br>
+    <b>Company Type:</b>  {{output.Company.Type}} <br>
+    <b>Number of Shows:</b> {{output['Number of Shows']}} <br>
+    <b>Show Opened:</b> {{output['Show Open'].strftime('%m/%d/%Y')}} <br>
+
+    <p>
+        <h4> Cast & Crew</h4>
+        {% for i in range(output.Cast_Crew|length) %}
+            <b>{{output.Cast_Crew[i].Role}}:</b>  {{output.Cast_Crew[i].Person}} <br>
+        {% endfor %}
+    </p>
+
+<a class= "btn btn-primary" href="{{ url_for('edit_production', pid=output._id)}}">
+               Edit Production Details
+                </a>
+<a class="btn btn-primary" href="{{ url_for('add_cast_crew',pid=pid )}}">Add Cast & Crew</a>
+
+<a class="btn btn-primary" href="{{ url_for('remove_cast_crew',pid=pid, output=output )}}">Remove Cast & Crew</a>
+
+<a class="btn btn-primary" href="{{ url_for('search_results')}}">Return to Results</a>
+
+{% endblock %}

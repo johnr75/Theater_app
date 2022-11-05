@@ -1,0 +1,42 @@
+{% extends "/base.html" %}
+{% from "_macros.html" import render_radio %}
+{% from "_macros.html" import render_date %}
+
+{%block title %} Welcome {% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Theatrical Production Database</h1>
+    <p></p>
+    <h4>Search Options</h4>
+ <form method="post" >
+        <div class="row">
+            <div class="col-3">
+                {{render_radio(form.search_field)}}<br><br>
+            </div>
+            <div class="col-4">
+                {{render_radio(form.search_type)}}<br><br>
+            </div>
+         </div>
+        <div class="row">
+            <div class="col-6">
+           <b> {{form.criteria.label(class="form-label")}}:</b> Use comma for multiple criteria.
+            {{form.criteria(class="form-control")}} <br>
+         </div>
+        </div>
+        <div class="row">
+            <div class="col-6 pb-3">
+            {{render_date(form.date_start)}}
+             {{render_date(form.date_end)}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-6" align="center">
+                {{form.submit(class="btn btn-primary btn-lg")}}
+
+            </div>
+         </div>
+
+
+ </form>
+
+{% endblock %}

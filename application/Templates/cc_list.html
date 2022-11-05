@@ -1,0 +1,41 @@
+{% extends "/base.html" %}
+
+
+
+{%block title %} Details {% endblock %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible" role="alert">
+  {{message}}
+</div>
+{% endfor %}
+            <div class="row mt-4 mb-3">
+                <div class="col-3"></div>
+                <div class="col-6"><h3> Select Cast & Crew to Remove</h3></div>
+                <div class="col-3"></div>
+            </div>
+
+        {% for i in range(output.Cast_Crew|length) %}
+            <div class="row mb-4">
+                <div class="col-3"></div>
+                <div class="col-2"> {{output.Cast_Crew[i].Role}}:   {{output.Cast_Crew[i].Person}}</div>
+                <div class="col-2"> <a class= "btn btn-primary" href="{{ url_for('remove_cc', pid=output._id,
+                                       Person=output.Cast_Crew[i].Person, Role=output.Cast_Crew[i].Role) }}">
+                                        Remove</a> </div>
+                <div class="col-3"></div>
+            </div>
+        {% endfor %}
+
+        <div class="row mt-3">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <a class="btn btn-primary" href="{{ url_for('add_cast_crew',pid=pid )}}">Add Cast & Crew</a>
+                    <a class="btn btn-primary" href="{{ url_for('production_detail',pid=pid )}}">Return to Details</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+
+
+{% endblock %}

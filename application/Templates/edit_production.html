@@ -1,0 +1,43 @@
+{% extends "/base.html" %}
+
+
+{%block title %} {{type}} Production {% endblock %}
+{% block content %}
+<h1 class='mt-4' align="center">{{type}} Production</h1>
+<div class="row">
+   <div class="col">
+
+   </div>
+ <div class="col-4">
+   <form method="post" >
+      {{form.hidden_tag()}}
+
+       {{form.production.label(class="form-label")}}
+       {{form.production(class="form-control")}}
+       <br>
+       {{form.company.label(class="form-label")}}
+       {{form.company(class="form-control")}}
+       <br>
+       {{form.shows.label(class="form-label")}}
+       {{form.shows(class="form-control")}}
+       <br>
+       {{form.show_open.label(class="form-label")}}
+       {{form.show_open(class="form-control")}}
+       <br>
+       {{form.s_type.label(class="form-label")}}
+       {{form.s_type(class="form-control")}}
+       <br>
+       <div align="center">
+            {{form.submit(class="btn btn-primary btn-lg")}}
+         <a href="{{ url_for('welcome')}}" class="btn btn-primary btn-lg">
+           Cancel
+         </a>
+       </div>
+   </form>
+ </div>
+ <div class="col">
+
+ </div>
+ </div>
+
+{% endblock %}

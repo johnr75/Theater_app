@@ -1,0 +1,11 @@
+$(function(){
+
+    function fill_company(){
+    var company_id =$("#company").val;
+
+    $.ajax({
+    type:"GET"
+    url: "/company/company_id"}).done(function(data){}
+    )
+    }
+});

@@ -1,0 +1,33 @@
+{% extends "/base.html" %}
+
+
+{%block title %} {{type}} {{lname}} {% endblock %}
+{% block content %}
+<h1 class='mt-4' align="center">{{type}} {{lname}}</h1>
+<div class="row">
+   <div class="col">
+
+   </div>
+ <div class="col-4">
+   <form method="post" >
+      {{form.hidden_tag()}}
+
+       {{form.name.label(class="form-label")}}
+       {{form.name(class="form-control")}}
+       <br>
+       {{form.active.label(class="form-label")}}
+       {{form.active(class="form-checkbox")}}
+       <div align="center">
+            {{form.submit(class="btn btn-primary btn-lg")}}
+         <a href="{{ url_for('pull_list', name=lname)}}" class="btn btn-primary btn-lg">
+           Cancel
+         </a>
+       </div>
+   </form>
+ </div>
+ <div class="col">
+
+ </div>
+ </div>
+
+{% endblock %}
