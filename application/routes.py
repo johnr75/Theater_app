@@ -20,7 +20,7 @@ def welcome():
         return redirect(url_for('search_results'))
 
     else:
-        return render_template("welcome.html", form=form)
+        return render_template("index.html", form=form)
 
 
 @app.route("/search_results/")
