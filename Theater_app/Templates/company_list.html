@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col"></div>
                 <div class="col pb-2 pt-2 border">
-                     <a href="{{ url_for('company_update', pid=result['_id'], type='edit')}}">  {{ result.Name }} </a>
+                     <a href="{{ url_for('main.company_update', pid=result['_id'], type='edit')}}">  {{ result.Name }} </a>
                 </div>
                 <div class="col pb-2 pt-2 border">{{result.City}}</div>
                 <div class="col pb-2 pt-2 border">{{result.State}}</div>
@@ -35,6 +35,6 @@
         {% endfor %}
 <br>
 <center>
-<a class="btn btn-primary" href="{{ url_for('company_update', type='add', pid=0 )}}">Add Company</a>
+<a class="btn btn-primary" href="{{ url_for('main.company_update', type='add', pid=0 )}}">Add Company</a>
 </center>
 {% endblock %}

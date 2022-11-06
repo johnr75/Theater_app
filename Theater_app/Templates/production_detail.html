@@ -28,13 +28,13 @@
         {% endfor %}
     </p>
 
-<a class= "btn btn-primary" href="{{ url_for('edit_production', pid=output._id)}}">
+<a class= "btn btn-primary" href="{{ url_for('main.edit_production', pid=output._id)}}">
                Edit Production Details
                 </a>
-<a class="btn btn-primary" href="{{ url_for('add_cast_crew',pid=pid )}}">Add Cast & Crew</a>
+<a class="btn btn-primary" href="{{ url_for('main.add_cast_crew',pid=pid )}}">Add Cast & Crew</a>
 
-<a class="btn btn-primary" href="{{ url_for('remove_cast_crew',pid=pid, output=output )}}">Remove Cast & Crew</a>
+<a class="btn btn-primary" href="{{ url_for('main.remove_cast_crew',pid=pid, output=output )}}">Remove Cast & Crew</a>
 
-<a class="btn btn-primary" href="{{ url_for('search_results')}}">Return to Results</a>
+<a class="btn btn-primary" href="{{ url_for('main.search_results')}}">Return to Results</a>
 
 {% endblock %}

@@ -25,7 +25,7 @@
             <div class="row">
                  <div class="col"></div>
                  <div class="col pb-2 pt-2 border">
-                     <a href="{{ url_for('production_detail', pid=result['_id'])}}">  {{ result.Production }} </a>
+                     <a href="{{ url_for('main.production_detail', pid=result['_id'])}}">  {{ result.Production }} </a>
                  </div>
                 <div class="col pb-2 pt-2 border">{{result.Company.Name}}</div>
                 <div class="col pb-2 pt-2 border">

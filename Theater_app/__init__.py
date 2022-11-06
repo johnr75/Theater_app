@@ -1,17 +1,23 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from flask_pymongo import PyMongo
+from .extensions import mongo
+from dotenv import load_dotenv
+from .routes import main
+
+load_dotenv()
 
 
-mongo = PyMongo()
+def create_app():
+    app = Flask(__name__)
+    app.config.from_prefixed_env()
+    Bootstrap(app)
+    app.register_blueprint(main)
+    mongo.init_app(app)
+    return app
 
-app = Flask(__name__)
-Bootstrap(app)
-config_object = 'Theater_app.settings'
-app.config['SECRET_KEY'] = '01bad144149208534d8fbb22d0d5b8f8daddc1b39edd5d3f73c5becb16be04bb'
-app.config[
-    'MONGO_URI'] = "mongodb+srv://jreinagel:FishRed2014@reinagel1.sge9k8m.mongodb.net/Theatrical_Tracking?retryWrites=true&w=majority"
 
-mongo.init_app(app)
 
-from Theater_app import routes
+
+
+
+

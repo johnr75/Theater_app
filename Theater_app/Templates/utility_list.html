@@ -22,7 +22,7 @@
             <div class="row">
                  <div class="col"></div>
                  <div class="col pb-2 pt-2 border">
-                     <a href="{{ url_for('utility_update', pid=result['_id'], lname=lname, type='edit')}}">  {{ result.Name }} </a>
+                     <a href="{{ url_for('main.utility_update', pid=result['_id'], lname=lname, type='edit')}}">  {{ result.Name }} </a>
                  </div>
                 <div class="col pb-2 pt-2 border">{{result.Active}}</div>
                 </div>
@@ -30,7 +30,7 @@
 {% endfor %}
 <br>
 <center>
-<a class="btn btn-primary" href="{{ url_for('utility_update',lname=lname, type='add', pid=0 )}}">Add {{lname}}</a>
+<a class="btn btn-primary" href="{{ url_for('main.utility_update',lname=lname, type='add', pid=0 )}}">Add {{lname}}</a>
 </center>
 
 {% endblock %}

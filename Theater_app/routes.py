@@ -1,12 +1,13 @@
 
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, Blueprint
 from .model import *
-from Theater_app import mongo, app
+from Theater_app import mongo
 from .forms import ProductionForm, CastCrew, person, show_type, company, com_type, SearchForm, UtilityForm, CompanyForm
 from .search import db_find_results
 
+main = Blueprint('main', __name__)
 
-@app.route("/", methods=['GET', 'POST'])
+@main.route("/", methods=['GET', 'POST'])
 def welcome():
     form = SearchForm()
     if request.method == 'POST':
@@ -17,26 +18,26 @@ def welcome():
         session['criteria'] = form.criteria.data
         session['start_date'] = form.date_start.data
         session['end_date'] = form.date_end.data
-        return redirect(url_for('search_results'))
+        return redirect(url_for('main.search_results'))
 
     else:
         return render_template("index.html", form=form)
 
 
-@app.route("/search_results/")
+@main.route("/search_results/")
 def search_results():
     results = db_find_results(mongo.db.Productions, session['field'], session['criteria'], session['sort'],
                               session['start_date'], session['end_date'])
     return render_template("search_results.html", results=results)
 
 
-@app.route("/productiondetail/<pid>")
+@main.route("/productiondetail/<pid>")
 def production_detail(pid):
     op = db_open_record(mongo.db.Productions, pid)
     return render_template("production_detail.html", output=op, pid=pid)
 
 
-@app.route("/add_production/", methods=['GET', 'POST'])
+@main.route("/add_production/", methods=['GET', 'POST'])
 def add_production():
     form = ProductionForm()
     form.s_type.choices = show_type()
@@ -46,10 +47,10 @@ def add_production():
     else:
         pid = db_add_record(mongo.db.Productions, form)
         flash("Production has been added!")
-        return redirect(url_for('production_detail', pid=pid))
+        return redirect(url_for('main.production_detail', pid=pid))
 
 
-@app.route("/edit_production/<pid>", methods=['GET', 'POST'])
+@main.route("/edit_production/<pid>", methods=['GET', 'POST'])
 def edit_production(pid):
     form = ProductionForm()
     form.s_type.choices = show_type()
@@ -57,7 +58,7 @@ def edit_production(pid):
     if request.method == "POST":
         db_edit_record(mongo.db.Productions, form=form, pid=pid)
         flash("Production has been edited!")
-        return redirect(url_for('production_detail', pid=pid))
+        return redirect(url_for('main.production_detail', pid=pid))
 
     else:
         op = db_open_record(mongo.db.Productions, pid)
@@ -69,31 +70,31 @@ def edit_production(pid):
         return render_template("edit_production.html", form=form, type='Edit')
 
 
-@app.route("/add_cast_crew/<pid>", methods=['GET', 'POST'])
+@main.route("/add_cast_crew/<pid>", methods=['GET', 'POST'])
 def add_cast_crew(pid):
     form = CastCrew()
     form.person.choices = person()
     if request.method == "POST":
         db_add_cc(mongo.db.Productions, form=form, pid=pid)
         flash("Cast and Crew has been added!")
-        return redirect(url_for('production_detail', pid=pid))
+        return redirect(url_for('main.production_detail', pid=pid))
     else:
         return render_template('add_cc.html', form=form, pid=pid)
 
 
-@app.route("/remove_cast_crew/<pid>")
+@main.route("/remove_cast_crew/<pid>")
 def remove_cast_crew(pid):
     op = db_open_record(mongo.db.Productions, pid)
     return render_template('cc_list.html', output=op, pid=pid)
 
 
-@app.route("/remove_cc/<pid>/<Person>/<Role>")
+@main.route("/remove_cc/<pid>/<Person>/<Role>")
 def remove_cc(pid, Person, Role):
     db_remove_cc(mongo.db.Productions, Role, Person, pid)
-    return redirect(url_for('remove_cast_crew', pid=pid))
+    return redirect(url_for('main.remove_cast_crew', pid=pid))
 
 
-@app.route("/utility/<name>")
+@main.route("/utility/<name>")
 def pull_list(name):
     match name:
         case 'People':
@@ -110,7 +111,7 @@ def pull_list(name):
             return render_template("utility_list.html", results=output, lname='Show Type')
 
 
-@app.route("/utility_update/<pid>,<lname>,<type>",  methods=['GET', 'POST'])
+@main.route("/utility_update/<pid>,<lname>,<type>",  methods=['GET', 'POST'])
 def utility_update(pid, lname, type):
     form = UtilityForm ()
     db1 =None
@@ -129,7 +130,7 @@ def utility_update(pid, lname, type):
             if request.method == "POST":
                 db_edit_utility_list(db1, form, pid)
                 print(lname)
-                return redirect(url_for('pull_list', name=lname))
+                return redirect(url_for('main.pull_list', name=lname))
             else:
                 op = db_open_record(db1, pid)
                 form.name.data = op['Name']
@@ -142,10 +143,10 @@ def utility_update(pid, lname, type):
             else:
                 pid = db_add_utility_list(db1, form)
                 flash("Production has been added!")
-                return redirect(url_for('pull_list', name=lname))
+                return redirect(url_for('main.pull_list', name=lname))
 
 
-@app.route("/company_update/<pid>,<type>",  methods=['GET', 'POST'])
+@main.route("/company_update/<pid>,<type>",  methods=['GET', 'POST'])
 def company_update(pid, type):
     form = CompanyForm ()
     form.c_type.choices = com_type()
@@ -153,7 +154,7 @@ def company_update(pid, type):
         case 'edit':
             if request.method == "POST":
                 db_edit_company_list(mongo.db.Company, form, pid)
-                return redirect(url_for('pull_list', name='Company'))
+                return redirect(url_for('main.pull_list', name='Company'))
             else:
                 op = db_open_record(mongo.db.Company, pid)
                 form.company.data = op['Name']
@@ -170,4 +171,4 @@ def company_update(pid, type):
             else:
                 pid = db_add_company_list(mongo.db.Company, form)
                 flash("Company has been added!")
-                return redirect(url_for('company_list'))
+                return redirect(url_for('main.company_list'))
