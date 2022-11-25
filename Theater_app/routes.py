@@ -7,6 +7,7 @@ from .search import db_find_results
 
 main = Blueprint('main', __name__)
 
+
 @main.route("/", methods=['GET', 'POST'])
 def welcome():
     form = SearchForm()
@@ -113,8 +114,8 @@ def pull_list(name):
 
 @main.route("/utility_update/<pid>,<lname>,<type>",  methods=['GET', 'POST'])
 def utility_update(pid, lname, type):
-    form = UtilityForm ()
-    db1 =None
+    form = UtilityForm()
+    db1 = None
     match lname:
         case 'People':
             db1 = mongo.db.People
@@ -134,8 +135,8 @@ def utility_update(pid, lname, type):
             else:
                 op = db_open_record(db1, pid)
                 form.name.data = op['Name']
-                form.active.data =op['Active']
-                return render_template("edit_utility.html", form=form, type='Edit' ,lname=lname)
+                form.active.data = op['Active']
+                return render_template("edit_utility.html", form=form, type='Edit', lname=lname)
 
         case 'add':
             if request.method == "GET":
@@ -148,7 +149,7 @@ def utility_update(pid, lname, type):
 
 @main.route("/company_update/<pid>,<type>",  methods=['GET', 'POST'])
 def company_update(pid, type):
-    form = CompanyForm ()
+    form = CompanyForm()
     form.c_type.choices = com_type()
     match type:
         case 'edit':

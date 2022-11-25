@@ -1,4 +1,4 @@
-from flask import Flask
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, IntegerField, DateField, RadioField, \
     BooleanField
@@ -132,3 +132,5 @@ class CompanyForm(FlaskForm):
     c_type = SelectField("Type", validators=[InputRequired()])
     active = BooleanField("Active", default=True)
     submit = SubmitField("Submit")
+
+
