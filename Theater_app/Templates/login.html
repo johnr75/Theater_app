@@ -1,0 +1,40 @@
+{% extends "/base_login.html" %}
+
+
+{%block title %} Login {% endblock %}
+{% block content %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+  {{message}}
+</div>
+
+
+{% endfor %}
+<h1 class='mt-4' align="center">{{type}} {{lname}}</h1>
+<div class="row">
+   <div class="col">
+
+   </div>
+ <div class="col-4">
+  <form method="post" >
+
+
+       {{form.username.label(class="form-label")}}
+       {{form.username(class="form-control")}}
+       <br>
+         {{form.password.label(class="form-label")}}
+       {{form.password(class="form-control")}}
+      <br>
+      <br>
+       <div align="center">
+            {{form.submit(class="btn btn-primary btn-lg")}}
+
+       </div>
+   </form>
+ </div>
+ <div class="col">
+
+ </div>
+ </div>
+
+{% endblock %}

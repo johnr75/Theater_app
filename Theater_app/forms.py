@@ -1,7 +1,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, IntegerField, DateField, RadioField, \
-    BooleanField
+    BooleanField, PasswordField
 from wtforms.validators import InputRequired
 from Theater_app import mongo
 
@@ -133,4 +133,12 @@ class CompanyForm(FlaskForm):
     active = BooleanField("Active", default=True)
     submit = SubmitField("Submit")
 
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+    submit = SubmitField("Login")
 
+class ChangePassword(FlaskForm):
+    username = StringField("Username", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+    submit = SubmitField("Submit")

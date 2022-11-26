@@ -10,20 +10,22 @@ main = Blueprint('main', __name__)
 
 @main.route("/", methods=['GET', 'POST'])
 def welcome():
-    form = SearchForm()
-    if request.method == 'POST':
-        if form.criteria.data == '':
-            form.criteria.data = None
-        session['field'] = form.search_field.data
-        session['sort'] = form.search_type.data
-        session['criteria'] = form.criteria.data
-        session['start_date'] = form.date_start.data
-        session['end_date'] = form.date_end.data
-        return redirect(url_for('main.search_results'))
-
+    print(session['username'])
+    if 'username' in session:
+        form = SearchForm()
+        if request.method == 'POST':
+            if form.criteria.data == '':
+                form.criteria.data = None
+                session['field'] = form.search_field.data
+                session['sort'] = form.search_type.data
+                session['criteria'] = form.criteria.data
+                session['start_date'] = form.date_start.data
+                session['end_date'] = form.date_end.data
+            return redirect(url_for('main.search_results'))
+        else:
+            return render_template("index.html", form=form)
     else:
-        return render_template("index.html", form=form)
-
+        return redirect(url_for('auth.login'))
 
 @main.route("/search_results/")
 def search_results():
