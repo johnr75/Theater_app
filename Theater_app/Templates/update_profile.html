@@ -1,12 +1,14 @@
-{% extends "/base_login.html" %}
+{% extends "/base.html" %}
 
 
-{%block title %} Login {% endblock %}
+{%block title %} Profile{% endblock %}
 {% block content %}
 {% for message in get_flashed_messages() %}
 <div class="alert alert-danger alert-dismissible" role="alert">
   {{message}}
 </div>
+
+
 {% endfor %}
 <h1 class='mt-4' align="center">{{type}} {{lname}}</h1>
 <div class="row">
@@ -14,21 +16,24 @@
 
    </div>
  <div class="col-4">
-  <form method="post" >
+  <form method="POST">
 
-
-       {{form.username.label(class="form-label")}}
-       {{form.username(class="form-control")}}
-       <br>
-         {{form.password.label(class="form-label")}}
+       {{form.csrf_token}}
+       {{form.password.label(class="form-label")}}
        {{form.password(class="form-control")}}
+       <br>
+         {{form.password2.label(class="form-label")}}
+       {{form.password2(class="form-control")}}
       <br>
-       {{form.remember.label(class="form-label")}}
-       {{form.remember(class="form-checkbox")}}
-      <br>
+
        <div align="center">
             {{form.submit(class="btn btn-primary btn-lg")}}
-
+          <a href="{{ url_for('auth.logout')}}" class="btn btn-primary btn-lg">
+           Logout
+         </a>
+                    <a href="{{ url_for('main.welcome')}}" class="btn btn-primary btn-lg">
+           Cancel
+         </a>
        </div>
    </form>
  </div>

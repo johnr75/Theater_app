@@ -1,6 +1,6 @@
 from bson import ObjectId
 from datetime import datetime, time
-from Theater_app import mongo
+from .extensions import mongo
 
 
 def db_open_record(db, pid):
@@ -92,3 +92,4 @@ def db_add_company_list(db, form):
                   'Type': form.c_type.data})
     newid = db.insert_one(add_items)
     return newid.inserted_id
+

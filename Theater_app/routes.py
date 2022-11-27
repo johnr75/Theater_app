@@ -1,16 +1,16 @@
-
 from flask import render_template, request, redirect, url_for, flash, session, Blueprint
 from .model import *
-from Theater_app import mongo
+from .extensions import mongo, login_manger
 from .forms import ProductionForm, CastCrew, person, show_type, company, com_type, SearchForm, UtilityForm, CompanyForm
 from .search import db_find_results
+from flask_login import login_required
 
 main = Blueprint('main', __name__)
 
 
 @main.route("/", methods=['GET', 'POST'])
+@login_required
 def welcome():
-    print(session['username'])
     if 'username' in session:
         form = SearchForm()
         if request.method == 'POST':
@@ -27,7 +27,9 @@ def welcome():
     else:
         return redirect(url_for('auth.login'))
 
+
 @main.route("/search_results/")
+@login_required
 def search_results():
     results = db_find_results(mongo.db.Productions, session['field'], session['criteria'], session['sort'],
                               session['start_date'], session['end_date'])
@@ -35,12 +37,14 @@ def search_results():
 
 
 @main.route("/productiondetail/<pid>")
+@login_required
 def production_detail(pid):
     op = db_open_record(mongo.db.Productions, pid)
     return render_template("production_detail.html", output=op, pid=pid)
 
 
 @main.route("/add_production/", methods=['GET', 'POST'])
+@login_required
 def add_production():
     form = ProductionForm()
     form.s_type.choices = show_type()
@@ -54,6 +58,7 @@ def add_production():
 
 
 @main.route("/edit_production/<pid>", methods=['GET', 'POST'])
+@login_required
 def edit_production(pid):
     form = ProductionForm()
     form.s_type.choices = show_type()
@@ -74,6 +79,7 @@ def edit_production(pid):
 
 
 @main.route("/add_cast_crew/<pid>", methods=['GET', 'POST'])
+@login_required
 def add_cast_crew(pid):
     form = CastCrew()
     form.person.choices = person()
@@ -86,18 +92,21 @@ def add_cast_crew(pid):
 
 
 @main.route("/remove_cast_crew/<pid>")
+@login_required
 def remove_cast_crew(pid):
     op = db_open_record(mongo.db.Productions, pid)
     return render_template('cc_list.html', output=op, pid=pid)
 
 
 @main.route("/remove_cc/<pid>/<Person>/<Role>")
+@login_required
 def remove_cc(pid, Person, Role):
     db_remove_cc(mongo.db.Productions, Role, Person, pid)
     return redirect(url_for('main.remove_cast_crew', pid=pid))
 
 
 @main.route("/utility/<name>")
+@login_required
 def pull_list(name):
     match name:
         case 'People':
@@ -114,7 +123,8 @@ def pull_list(name):
             return render_template("utility_list.html", results=output, lname='Show Type')
 
 
-@main.route("/utility_update/<pid>,<lname>,<type>",  methods=['GET', 'POST'])
+@main.route("/utility_update/<pid>,<lname>,<type>", methods=['GET', 'POST'])
+@login_required
 def utility_update(pid, lname, type):
     form = UtilityForm()
     db1 = None
@@ -132,7 +142,7 @@ def utility_update(pid, lname, type):
         case 'edit':
             if request.method == "POST":
                 db_edit_utility_list(db1, form, pid)
-                print(lname)
+
                 return redirect(url_for('main.pull_list', name=lname))
             else:
                 op = db_open_record(db1, pid)
@@ -149,7 +159,8 @@ def utility_update(pid, lname, type):
                 return redirect(url_for('main.pull_list', name=lname))
 
 
-@main.route("/company_update/<pid>,<type>",  methods=['GET', 'POST'])
+@main.route("/company_update/<pid>,<type>", methods=['GET', 'POST'])
+@login_required
 def company_update(pid, type):
     form = CompanyForm()
     form.c_type.choices = com_type()
@@ -165,7 +176,7 @@ def company_update(pid, type):
                 form.state.data = op['State']
                 form.city.data = op['City']
                 form.c_type.data = op['Type']
-                print(form.c_type.data)
+
                 return render_template("edit_company.html", form=form, type='Edit')
 
         case 'add':

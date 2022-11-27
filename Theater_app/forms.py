@@ -2,8 +2,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, IntegerField, DateField, RadioField, \
     BooleanField, PasswordField
-from wtforms.validators import InputRequired
-from Theater_app import mongo
+from wtforms.validators import InputRequired, EqualTo, Length
+from .extensions import mongo
 
 states = [
     ('AL', 'Alabama'),
@@ -133,12 +133,16 @@ class CompanyForm(FlaskForm):
     active = BooleanField("Active", default=True)
     submit = SubmitField("Submit")
 
+
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[InputRequired()])
+    remember = BooleanField("Remember Me")
     submit = SubmitField("Login")
 
+
 class ChangePassword(FlaskForm):
-    username = StringField("Username", validators=[InputRequired()])
-    password = PasswordField("Password", validators=[InputRequired()])
+    password = PasswordField("Password", [InputRequired(), EqualTo('password2', message='Passwords must match'),
+                                          Length(min=6, message='Must be at least 6 characters long')])
+    password2 = PasswordField("Confirm Password", validators=[InputRequired()])
     submit = SubmitField("Submit")
